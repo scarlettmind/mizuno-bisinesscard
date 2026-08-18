@@ -85,8 +85,8 @@ export default function Home() {
           <p><span>Manager,</span> Business Development</p>
         </div>
         <div className="actions">
-          <button onClick={saveContact}>SAVE CONTACT <b>↓</b></button>
-          <button onClick={() => setExchange(true)}>EXCHANGE CONTACT <b>↗</b></button>
+          <button onClick={saveContact}><span>SAVE CONTACT</span><b>↓</b></button>
+          <button onClick={() => setExchange(true)}><span>EXCHANGE CONTACT</span><b>↗</b></button>
         </div>
       </section>
 

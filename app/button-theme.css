@@ -1,25 +1,109 @@
+.actions {
+  border: 1px solid rgb(210 234 247 / 32%);
+  overflow: hidden;
+  isolation: isolate;
+}
+
 .actions button {
-  background: rgb(198 217 230 / 86%);
-  border-color: rgb(216 232 242 / 66%);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(110deg, rgb(183 218 235 / 92%), rgb(208 223 238 / 88%));
+  border: 0;
+  border-bottom: 1px solid rgb(235 247 255 / 45%);
   color: #102d50;
-  backdrop-filter: blur(12px) saturate(.8);
+  backdrop-filter: blur(16px) saturate(1.15);
+}
+
+.actions button::before,
+.actions button::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.actions button::before {
+  width: 150%;
+  height: 270%;
+  left: -24%;
+  top: -95%;
+  border-radius: 42% 58% 63% 37% / 38% 46% 54% 62%;
+  background:
+    radial-gradient(circle at 28% 40%, rgb(244 251 255 / 88%) 0 12%, transparent 31%),
+    radial-gradient(circle at 72% 58%, rgb(142 196 229 / 78%) 0 17%, transparent 38%),
+    conic-gradient(from 75deg, #d2e9f6, #a8cde2, #d7d9ef, #92cbe7, #d2e9f6);
+  filter: blur(5px);
+  animation: liquidDrift 8s ease-in-out infinite alternate;
+}
+
+.actions button::after {
+  width: 95%;
+  height: 120%;
+  right: -33%;
+  bottom: -68%;
+  border-radius: 50%;
+  background: rgb(113 186 224 / 38%);
+  filter: blur(20px);
+  animation: liquidBloom 5.5s ease-in-out infinite alternate;
 }
 
 .actions button + button {
-  background: rgb(23 54 95 / 85%);
-  border-color: rgb(158 187 208 / 47%);
-  color: #f2f7fb;
+  background: linear-gradient(115deg, rgb(7 31 72 / 94%), rgb(28 67 118 / 92%));
+  border: 0;
+  color: #f5f9fc;
+}
+
+.actions button + button::before {
+  background:
+    radial-gradient(circle at 24% 34%, rgb(76 155 219 / 62%) 0 13%, transparent 34%),
+    radial-gradient(circle at 76% 62%, rgb(37 201 220 / 38%) 0 14%, transparent 35%),
+    conic-gradient(from 210deg, #061b44, #245ca0, #172c66, #0e7897, #061b44);
+  filter: blur(7px);
+  animation-duration: 9.5s;
+  animation-direction: alternate-reverse;
+}
+
+.actions button + button::after {
+  background: rgb(79 175 218 / 25%);
+  left: -27%;
+  right: auto;
+  animation-delay: -2s;
+}
+
+.actions button span,
+.actions button b {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 1px 12px rgb(255 255 255 / 18%);
 }
 
 .actions button:hover,
 .actions button:focus-visible {
-  background: rgb(216 231 239 / 92%);
+  background: linear-gradient(110deg, rgb(199 230 243 / 96%), rgb(223 230 245 / 94%));
   color: #102d50;
-  filter: brightness(1.08);
+  filter: brightness(1.06);
 }
 
 .actions button + button:hover,
 .actions button + button:focus-visible {
-  background: rgb(37 74 117 / 91%);
+  background: linear-gradient(115deg, rgb(12 43 91 / 96%), rgb(35 82 139 / 94%));
   color: white;
+}
+
+@keyframes liquidDrift {
+  0% { transform: translate3d(-5%, -4%, 0) rotate(-8deg) scale(1); }
+  45% { transform: translate3d(8%, 7%, 0) rotate(12deg) scale(1.12); }
+  100% { transform: translate3d(-1%, 13%, 0) rotate(25deg) scale(1.04); }
+}
+
+@keyframes liquidBloom {
+  from { transform: translate3d(-12%, 0, 0) scale(.82); opacity: .45; }
+  to { transform: translate3d(12%, -28%, 0) scale(1.24); opacity: .9; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .actions button::before,
+  .actions button::after { animation: none; }
 }
