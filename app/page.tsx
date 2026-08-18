@@ -64,6 +64,18 @@ export default function Home() {
     URL.revokeObjectURL(url);
   };
 
+  const fluidPress = (event: React.PointerEvent<HTMLButtonElement>) => {
+    const button = event.currentTarget;
+    const wave = button.querySelector<HTMLElement>(".tap-wave");
+    if (!wave) return;
+    const rect = button.getBoundingClientRect();
+    wave.style.setProperty("--tap-x", `${event.clientX - rect.left}px`);
+    wave.style.setProperty("--tap-y", `${event.clientY - rect.top}px`);
+    wave.classList.remove("play");
+    window.requestAnimationFrame(() => wave.classList.add("play"));
+    window.setTimeout(() => wave.classList.remove("play"), 650);
+  };
+
   const connect = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -85,8 +97,8 @@ export default function Home() {
           <p><span>Manager,</span> Business Development</p>
         </div>
         <div className="actions">
-          <button onClick={saveContact}><span>SAVE CONTACT</span><b>↓</b></button>
-          <button onClick={() => setExchange(true)}><span>EXCHANGE CONTACT</span><b>↗</b></button>
+          <button onPointerDown={fluidPress} onClick={saveContact}><span>SAVE CONTACT</span><b>↓</b><i className="tap-wave" /></button>
+          <button onPointerDown={fluidPress} onClick={() => setExchange(true)}><span>EXCHANGE CONTACT</span><b>↗</b><i className="tap-wave" /></button>
         </div>
       </section>
 

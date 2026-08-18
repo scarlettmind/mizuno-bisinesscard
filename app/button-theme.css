@@ -1,5 +1,5 @@
 .actions {
-  border: 1px solid rgb(210 234 247 / 32%);
+  border: 0;
   overflow: hidden;
   isolation: isolate;
 }
@@ -10,7 +10,6 @@
   overflow: hidden;
   background: linear-gradient(110deg, rgb(183 218 235 / 92%), rgb(208 223 238 / 88%));
   border: 0;
-  border-bottom: 1px solid rgb(235 247 255 / 45%);
   color: #102d50;
   backdrop-filter: blur(16px) saturate(1.15);
 }
@@ -19,7 +18,7 @@
 .actions button::after {
   content: "";
   position: absolute;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   will-change: transform;
 }
@@ -61,7 +60,7 @@
     radial-gradient(circle at 76% 62%, rgb(37 201 220 / 38%) 0 14%, transparent 35%),
     conic-gradient(from 210deg, #061b44, #245ca0, #172c66, #0e7897, #061b44);
   filter: blur(7px);
-  animation-duration: 9.5s;
+  animation-duration: 6.8s;
   animation-direction: alternate-reverse;
 }
 
@@ -77,6 +76,26 @@
   position: relative;
   z-index: 2;
   text-shadow: 0 1px 12px rgb(255 255 255 / 18%);
+}
+
+.actions .tap-wave {
+  --tap-x: 50%;
+  --tap-y: 50%;
+  position: absolute;
+  z-index: 3;
+  left: var(--tap-x);
+  top: var(--tap-y);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  background: radial-gradient(circle, rgb(255 255 255 / 72%) 0 8%, rgb(185 231 255 / 35%) 32%, transparent 70%);
+}
+
+.actions .tap-wave.play {
+  animation: tapWave .62s cubic-bezier(.2,.7,.2,1) forwards;
 }
 
 .actions button:hover,
@@ -101,6 +120,12 @@
 @keyframes liquidBloom {
   from { transform: translate3d(-12%, 0, 0) scale(.82); opacity: .45; }
   to { transform: translate3d(12%, -28%, 0) scale(1.24); opacity: .9; }
+}
+
+@keyframes tapWave {
+  0% { opacity: .9; transform: translate(-50%, -50%) scale(0); }
+  75% { opacity: .42; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(34); }
 }
 
 @media (prefers-reduced-motion: reduce) {
