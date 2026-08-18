@@ -1,5 +1,16 @@
+.identity {
+  --ui-font: Arial, "Helvetica Neue", sans-serif;
+  font-family: var(--ui-font);
+}
+
+.identity button,
+.identity input {
+  font-family: var(--ui-font);
+}
+
 .person p {
   font-size: clamp(17px, 1.8vw, 25px);
+  letter-spacing: .01em;
 }
 
 .video {
@@ -54,20 +65,28 @@
 }
 
 @media (max-width: 700px) {
+  .identity {
+    min-height: 100svh;
+  }
+
   .identity-content {
     justify-content: center;
-    padding: 82px 22px 28px;
+    padding: max(76px, env(safe-area-inset-top)) 22px max(24px, env(safe-area-inset-bottom));
   }
 
   .person h1 {
-    font-size: clamp(56px, 16vw, 70px);
+    font-size: clamp(44px, 13.8vw, 58px);
+    line-height: .92;
+    letter-spacing: -.065em;
+    white-space: nowrap;
   }
 
   .person p {
     display: block;
-    font-size: 17px;
+    font-size: clamp(16px, 4.35vw, 18px);
     line-height: 1.35;
-    margin-top: 20px;
+    margin-top: 18px;
+    white-space: nowrap;
   }
 
   .person p span {
@@ -75,7 +94,13 @@
   }
 
   .actions {
-    margin-top: 48px;
+    width: min(520px, calc(100vw - 46px));
+    margin-top: clamp(38px, 6.5vh, 54px);
+  }
+
+  .actions button {
+    height: clamp(78px, 10.4vh, 88px);
+    padding-inline: 27px;
   }
 
   .background-video,
@@ -84,6 +109,15 @@
     height: 100%;
     object-fit: cover;
     object-position: center center;
+  }
+
+  .intro-wordmark {
+    font-size: clamp(54px, 18vw, 72px);
+  }
+
+  header {
+    left: 24px;
+    top: max(24px, env(safe-area-inset-top));
   }
 
   .contact-intro {

@@ -103,8 +103,14 @@ export default function Home() {
 
   return (
     <main className={`identity ${transitioning ? "is-transitioning" : ""} ${introDone ? "is-ready" : ""}`}>
-      <video ref={backgroundVideo} className="video background-video" src="/airweave-loop.mp4?v=3" autoPlay muted playsInline loop preload="auto" disablePictureInPicture aria-hidden="true" />
-      {!introDone && <video ref={introVideo} className="video intro-video" src="/airweave-intro.mp4?v=3" autoPlay muted playsInline preload="auto" disablePictureInPicture onCanPlay={() => void resumePlayback()} onTimeUpdate={checkIntro} onEnded={beginTransition} aria-hidden="true" />}
+      <video ref={backgroundVideo} className="video background-video" autoPlay muted playsInline loop preload="auto" disablePictureInPicture aria-hidden="true">
+        <source media="(max-width: 700px) and (orientation: portrait)" src="/airweave-loop-mobile.mp4?v=14" type="video/mp4" />
+        <source src="/airweave-loop.mp4?v=14" type="video/mp4" />
+      </video>
+      {!introDone && <video ref={introVideo} className="video intro-video" autoPlay muted playsInline preload="auto" disablePictureInPicture onCanPlay={() => void resumePlayback()} onTimeUpdate={checkIntro} onEnded={beginTransition} aria-hidden="true">
+        <source media="(max-width: 700px) and (orientation: portrait)" src="/airweave-intro-mobile.mp4?v=14" type="video/mp4" />
+        <source src="/airweave-intro.mp4?v=14" type="video/mp4" />
+      </video>}
       <div className="video-shade" />
 
       {needsTap && <button className="play-gate" onClick={() => void resumePlayback()}><i /> TAP TO PLAY</button>}
