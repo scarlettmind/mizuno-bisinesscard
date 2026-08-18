@@ -59,15 +59,27 @@ export default function Home() {
       <nav className="nav"><a className="brand" href="#top">airweave</a><span>DIGITAL IDENTITY <b>01</b></span></nav>
 
       <section className="hero" id="top">
-        <div className="fiber-orbit" aria-hidden="true"><i /><i /><i /><i /><i /><i /><i /><i /></div>
-        <p className="kicker">TOKYO · JAPAN</p>
-        <h1>YUTA<br /><em>MIZUNO</em></h1>
-        <div className="role"><span>MANAGER</span><span>BUSINESS DEVELOPMENT</span></div>
-        <p className="statement">Let’s build something<br />together.</p>
+        <div className="weave-stage" aria-hidden="true">
+          <div className="weave-card">
+            <div className="weave-glow" />
+            <div className="fiber-network">
+              {Array.from({ length: 18 }, (_, i) => <i key={i} />)}
+            </div>
+            <span className="material-code">AIRFIBER® / CONNECTION 001</span>
+          </div>
+          <div className="signal"><i /><i /><i /></div>
+        </div>
+        <div className="hero-copy">
+          <p className="kicker">AIRWEAVE DIGITAL IDENTITY · TOKYO</p>
+          <h1><span>YUTA</span><br /><em>MIZUNO</em></h1>
+          <div className="role"><span>MANAGER</span><span>BUSINESS DEVELOPMENT</span></div>
+          <p className="statement">Let’s build something together.</p>
+        </div>
         <div className="hero-actions">
           <button onClick={saveContact}>SAVE CONTACT <b>↓</b></button>
           <button className="light" onClick={() => setExchange(true)}>EXCHANGE CONTACT <b>↗</b></button>
         </div>
+        <div className="hero-index"><span>01</span><i /><small>IDENTITY IN MOTION</small></div>
         <a className="scroll" href="#together">SCROLL TO DISCOVER <span>↓</span></a>
       </section>
 
