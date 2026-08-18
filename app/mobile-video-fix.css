@@ -94,13 +94,22 @@
   }
 
   .actions {
-    width: min(520px, calc(100vw - 46px));
+    width: 52vw;
+    min-width: 198px;
+    max-width: 224px;
     margin-top: clamp(38px, 6.5vh, 54px);
   }
 
   .actions button {
-    height: clamp(78px, 10.4vh, 88px);
-    padding-inline: 27px;
+    height: 64px;
+    padding-inline: 16px;
+    font-size: 8px;
+    letter-spacing: .16em;
+  }
+
+  .actions .action-arrow {
+    width: 17px;
+    height: 17px;
   }
 
   .background-video,

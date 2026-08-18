@@ -104,12 +104,12 @@ export default function Home() {
   return (
     <main className={`identity ${transitioning ? "is-transitioning" : ""} ${introDone ? "is-ready" : ""}`}>
       <video ref={backgroundVideo} className="video background-video" autoPlay muted playsInline loop preload="auto" disablePictureInPicture aria-hidden="true">
-        <source media="(max-width: 700px) and (orientation: portrait)" src="/airweave-loop-mobile.mp4?v=14" type="video/mp4" />
-        <source src="/airweave-loop.mp4?v=14" type="video/mp4" />
+        <source media="(max-width: 700px) and (orientation: portrait)" src="/airweave-loop-mobile.mp4?v=15" type="video/mp4" />
+        <source src="/airweave-loop.mp4?v=15" type="video/mp4" />
       </video>
       {!introDone && <video ref={introVideo} className="video intro-video" autoPlay muted playsInline preload="auto" disablePictureInPicture onCanPlay={() => void resumePlayback()} onTimeUpdate={checkIntro} onEnded={beginTransition} aria-hidden="true">
-        <source media="(max-width: 700px) and (orientation: portrait)" src="/airweave-intro-mobile.mp4?v=14" type="video/mp4" />
-        <source src="/airweave-intro.mp4?v=14" type="video/mp4" />
+        <source media="(max-width: 700px) and (orientation: portrait)" src="/airweave-intro-mobile.mp4?v=15" type="video/mp4" />
+        <source src="/airweave-intro.mp4?v=15" type="video/mp4" />
       </video>}
       <div className="video-shade" />
 
@@ -124,8 +124,8 @@ export default function Home() {
           <p><span>Manager,</span> Business Development</p>
         </div>
         <div className="actions">
-          <button onPointerDown={fluidPress} onClick={saveContact}><span>SAVE CONTACT</span><b>↓</b><i className="tap-wave" /></button>
-          <button onPointerDown={fluidPress} onClick={() => setExchange(true)}><span>EXCHANGE CONTACT</span><b>↗</b><i className="tap-wave" /></button>
+          <button onPointerDown={fluidPress} onClick={saveContact}><span>SAVE CONTACT</span><svg className="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v15m0 0-5-5m5 5 5-5" /></svg><i className="tap-wave" /></button>
+          <button onPointerDown={fluidPress} onClick={() => setExchange(true)}><span>EXCHANGE CONTACT</span><svg className="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6m0 0H9m9 0v9" /></svg><i className="tap-wave" /></button>
         </div>
       </section>
 

@@ -72,10 +72,22 @@
 }
 
 .actions button span,
-.actions button b {
+.actions button b,
+.actions .action-arrow {
   position: relative;
   z-index: 2;
   text-shadow: 0 1px 12px rgb(255 255 255 / 18%);
+}
+
+.actions .action-arrow {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .actions .tap-wave {
