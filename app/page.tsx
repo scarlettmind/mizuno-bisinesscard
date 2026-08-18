@@ -73,7 +73,7 @@ export default function Home() {
     wave.style.setProperty("--tap-y", `${event.clientY - rect.top}px`);
     wave.classList.remove("play");
     window.requestAnimationFrame(() => wave.classList.add("play"));
-    window.setTimeout(() => wave.classList.remove("play"), 850);
+    window.setTimeout(() => wave.classList.remove("play"), 650);
   };
 
   const connect = (event: FormEvent<HTMLFormElement>) => {
