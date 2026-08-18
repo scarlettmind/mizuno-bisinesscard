@@ -18,22 +18,32 @@ export default function Home() {
   const backgroundVideo = useRef<HTMLVideoElement>(null);
   const [transitioning, setTransitioning] = useState(false);
   const [introDone, setIntroDone] = useState(false);
+  const [needsTap, setNeedsTap] = useState(false);
   const [exchange, setExchange] = useState(false);
   const [connectedName, setConnectedName] = useState("");
 
+  const resumePlayback = async () => {
+    const videos = [introVideo.current, backgroundVideo.current].filter(Boolean) as HTMLVideoElement[];
+    videos.forEach((video) => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.setAttribute("muted", "");
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+    });
+    const results = await Promise.allSettled(videos.map((video) => video.play()));
+    setNeedsTap(results.every((result) => result.status === "rejected"));
+  };
+
   useEffect(() => {
-    const tryPlay = () => {
-      void introVideo.current?.play().catch(() => undefined);
-      void backgroundVideo.current?.play().catch(() => undefined);
-    };
-    tryPlay();
+    void resumePlayback();
     const fallback = window.setTimeout(beginTransition, 2550);
-    window.addEventListener("pointerdown", tryPlay, { once: true });
-    window.addEventListener("touchstart", tryPlay, { once: true });
+    const playbackCheck = window.setTimeout(() => {
+      if (introVideo.current?.paused && backgroundVideo.current?.paused) setNeedsTap(true);
+    }, 900);
     return () => {
       window.clearTimeout(fallback);
-      window.removeEventListener("pointerdown", tryPlay);
-      window.removeEventListener("touchstart", tryPlay);
+      window.clearTimeout(playbackCheck);
     };
   // The fallback deliberately runs once on initial load.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,7 +54,7 @@ export default function Home() {
     setTransitioning(true);
     if (backgroundVideo.current) {
       backgroundVideo.current.currentTime = 0;
-      void backgroundVideo.current.play();
+      void backgroundVideo.current.play().catch(() => setNeedsTap(true));
     }
     window.setTimeout(() => setIntroDone(true), 650);
   };
@@ -54,8 +64,17 @@ export default function Home() {
     if (video.duration - video.currentTime < 0.42) beginTransition();
   };
 
-  const saveContact = () => {
-    const card = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nORG:${profile.company}\nTITLE:${profile.title}\nEMAIL:${profile.email}\nURL:${profile.website}\nEND:VCARD`;
+  const saveContact = async () => {
+    let photoLine = "";
+    try {
+      const response = await fetch("/mizuno-yuta.jpg");
+      const bytes = new Uint8Array(await response.arrayBuffer());
+      let binary = "";
+      for (let i = 0; i < bytes.length; i += 8192) binary += String.fromCharCode(...bytes.subarray(i, i + 8192));
+      const folded = btoa(binary).match(/.{1,74}/g)?.join("\n ") ?? "";
+      photoLine = `\nPHOTO;ENCODING=b;TYPE=JPEG:${folded}`;
+    } catch { /* Contact still saves if the portrait cannot be loaded. */ }
+    const card = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nN:Mizuno;Yuta;;;\nORG:${profile.company}\nTITLE:${profile.title}\nEMAIL:${profile.email}\nURL:${profile.website}${photoLine}\nEND:VCARD`;
     const url = URL.createObjectURL(new Blob([card], { type: "text/vcard" }));
     const link = document.createElement("a");
     link.href = url;
@@ -84,9 +103,11 @@ export default function Home() {
 
   return (
     <main className={`identity ${transitioning ? "is-transitioning" : ""} ${introDone ? "is-ready" : ""}`}>
-      <video ref={backgroundVideo} className="video background-video" src="/airweave-loop.mp4?v=2" autoPlay muted playsInline loop preload="auto" aria-hidden="true" />
-      {!introDone && <video ref={introVideo} className="video intro-video" src="/airweave-intro.mp4?v=2" autoPlay muted playsInline preload="auto" onTimeUpdate={checkIntro} onEnded={beginTransition} aria-hidden="true" />}
+      <video ref={backgroundVideo} className="video background-video" src="/airweave-loop.mp4?v=3" autoPlay muted playsInline loop preload="auto" disablePictureInPicture aria-hidden="true" />
+      {!introDone && <video ref={introVideo} className="video intro-video" src="/airweave-intro.mp4?v=3" autoPlay muted playsInline preload="auto" disablePictureInPicture onCanPlay={() => void resumePlayback()} onTimeUpdate={checkIntro} onEnded={beginTransition} aria-hidden="true" />}
       <div className="video-shade" />
+
+      {needsTap && <button className="play-gate" onClick={() => void resumePlayback()}><i /> TAP TO PLAY</button>}
 
       <div className="intro-wordmark" aria-hidden="true">airweave</div>
       <header><div className="wordmark">airweave</div></header>
@@ -106,8 +127,7 @@ export default function Home() {
         <button className="modal-close" onClick={() => { setExchange(false); setConnectedName(""); }} aria-label="Close">×</button>
         {!connectedName ? (
           <div className="form-wrap">
-            <p className="eyebrow">LET&apos;S STAY CONNECTED</p>
-            <h2>Exchange<br /><em>contact.</em></h2>
+            <div className="contact-intro"><img src="/mizuno-yuta.jpg" alt="Mizuno Yuta" /><div><p className="eyebrow">LET&apos;S STAY CONNECTED</p><h2>Exchange<br /><em>contact.</em></h2></div></div>
             <form onSubmit={connect}>
               <label>Your name<input name="name" required autoComplete="name" placeholder="James" /></label>
               <label>Company<input name="company" required autoComplete="organization" placeholder="Company name" /></label>
