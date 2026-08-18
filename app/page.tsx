@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 const profile = {
   name: "Mizuno Yuta",
@@ -14,11 +14,30 @@ const profile = {
 const interests = ["Hospitality", "Sports", "Education", "Partnership"];
 
 export default function Home() {
+  const introVideo = useRef<HTMLVideoElement>(null);
   const backgroundVideo = useRef<HTMLVideoElement>(null);
   const [transitioning, setTransitioning] = useState(false);
   const [introDone, setIntroDone] = useState(false);
   const [exchange, setExchange] = useState(false);
   const [connectedName, setConnectedName] = useState("");
+
+  useEffect(() => {
+    const tryPlay = () => {
+      void introVideo.current?.play().catch(() => undefined);
+      void backgroundVideo.current?.play().catch(() => undefined);
+    };
+    tryPlay();
+    const fallback = window.setTimeout(beginTransition, 2550);
+    window.addEventListener("pointerdown", tryPlay, { once: true });
+    window.addEventListener("touchstart", tryPlay, { once: true });
+    return () => {
+      window.clearTimeout(fallback);
+      window.removeEventListener("pointerdown", tryPlay);
+      window.removeEventListener("touchstart", tryPlay);
+    };
+  // The fallback deliberately runs once on initial load.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const beginTransition = () => {
     if (transitioning) return;
@@ -53,8 +72,8 @@ export default function Home() {
 
   return (
     <main className={`identity ${transitioning ? "is-transitioning" : ""} ${introDone ? "is-ready" : ""}`}>
-      <video ref={backgroundVideo} className="video background-video" src="/airweave-loop.mp4" muted playsInline loop preload="auto" aria-hidden="true" />
-      {!introDone && <video className="video intro-video" src="/airweave-intro.mp4" autoPlay muted playsInline preload="auto" onTimeUpdate={checkIntro} onEnded={beginTransition} aria-hidden="true" />}
+      <video ref={backgroundVideo} className="video background-video" src="/airweave-loop.mp4?v=2" autoPlay muted playsInline loop preload="auto" aria-hidden="true" />
+      {!introDone && <video ref={introVideo} className="video intro-video" src="/airweave-intro.mp4?v=2" autoPlay muted playsInline preload="auto" onTimeUpdate={checkIntro} onEnded={beginTransition} aria-hidden="true" />}
       <div className="video-shade" />
 
       <div className="intro-wordmark" aria-hidden="true">airweave</div>
