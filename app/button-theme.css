@@ -1,0 +1,25 @@
+.actions button {
+  background: rgb(198 217 230 / 86%);
+  border-color: rgb(216 232 242 / 66%);
+  color: #102d50;
+  backdrop-filter: blur(12px) saturate(.8);
+}
+
+.actions button + button {
+  background: rgb(23 54 95 / 85%);
+  border-color: rgb(158 187 208 / 47%);
+  color: #f2f7fb;
+}
+
+.actions button:hover,
+.actions button:focus-visible {
+  background: rgb(216 231 239 / 92%);
+  color: #102d50;
+  filter: brightness(1.08);
+}
+
+.actions button + button:hover,
+.actions button + button:focus-visible {
+  background: rgb(37 74 117 / 91%);
+  color: white;
+}
