@@ -62,17 +62,36 @@ export default function Home() {
   };
 
   const saveContact = async () => {
-    let photoLine = "";
+    let photoLines: string[] = [];
     try {
       const response = await fetch("/mizuno-yuta.jpg");
+      if (!response.ok) throw new Error("Portrait unavailable");
       const bytes = new Uint8Array(await response.arrayBuffer());
       let binary = "";
       for (let i = 0; i < bytes.length; i += 8192) binary += String.fromCharCode(...bytes.subarray(i, i + 8192));
-      const folded = btoa(binary).match(/.{1,74}/g)?.join("\n ") ?? "";
-      photoLine = `\nPHOTO;ENCODING=b;TYPE=JPEG:${folded}`;
+      const encoded = btoa(binary);
+      const prefix = "PHOTO;ENCODING=b;TYPE=JPEG:";
+      const firstChunkLength = 75 - prefix.length;
+      photoLines = [prefix + encoded.slice(0, firstChunkLength)];
+      for (let i = firstChunkLength; i < encoded.length; i += 74) {
+        photoLines.push(` ${encoded.slice(i, i + 74)}`);
+      }
     } catch { /* Contact still saves if the portrait cannot be loaded. */ }
-    const card = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nN:Mizuno;Yuta;;;\nORG:${profile.company}\nTITLE:${profile.title}\nTEL;TYPE=CELL:${profile.phone}\nEMAIL:${profile.email}\nURL:${profile.website}${photoLine}\nEND:VCARD`;
-    const url = URL.createObjectURL(new Blob([card], { type: "text/vcard" }));
+    const card = [
+      "BEGIN:VCARD",
+      "VERSION:3.0",
+      `FN:${profile.name}`,
+      "N:Mizuno;Yuta;;;",
+      `ORG:${profile.company}`,
+      `TITLE:${profile.title}`,
+      `TEL;TYPE=CELL:${profile.phone}`,
+      `EMAIL;TYPE=INTERNET:${profile.email}`,
+      `URL:${profile.website}`,
+      ...photoLines,
+      "END:VCARD",
+      "",
+    ].join("\r\n");
+    const url = URL.createObjectURL(new Blob([card], { type: "text/vcard;charset=utf-8" }));
     const link = document.createElement("a");
     link.href = url;
     link.download = "Yuta-Mizuno.vcf";
