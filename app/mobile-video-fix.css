@@ -8,9 +8,17 @@
   font-family: var(--ui-font);
 }
 
-.person p {
+.person .role {
   font-size: clamp(17px, 1.8vw, 25px);
   letter-spacing: .01em;
+}
+
+.person .company {
+  margin-top: 9px;
+  font-size: clamp(12px, 1vw, 15px);
+  font-weight: 500;
+  letter-spacing: .12em;
+  color: rgb(226 244 255 / 86%);
 }
 
 .video {
@@ -81,16 +89,18 @@
     white-space: nowrap;
   }
 
-  .person p {
+  .person .role {
     display: block;
-    font-size: clamp(16px, 4.35vw, 18px);
-    line-height: 1.35;
+    max-width: 330px;
+    font-size: clamp(13px, 3.55vw, 15px);
+    line-height: 1.45;
     margin-top: 18px;
-    white-space: nowrap;
+    white-space: normal;
   }
 
-  .person p span {
-    display: inline;
+  .person .company {
+    margin-top: 8px;
+    font-size: 11px;
   }
 
   .actions {

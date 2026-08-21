@@ -1,17 +1,14 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const profile = {
-  name: "Mizuno Yuta",
-  title: "Manager, Business Development",
-  company: "airweave",
+  name: "Yuta Mizuno",
+  title: "Business Development, Public Relations & President’s Office",
+  company: "airweave inc.",
   email: "yuta.mizuno@airweave.com",
   website: "https://www.airweave.com/",
-  linkedin: "https://www.linkedin.com/",
 };
-
-const interests = ["Hospitality", "Sports", "Education", "Partnership"];
 
 export default function Home() {
   const introVideo = useRef<HTMLVideoElement>(null);
@@ -19,8 +16,6 @@ export default function Home() {
   const [transitioning, setTransitioning] = useState(false);
   const [introDone, setIntroDone] = useState(false);
   const [needsTap, setNeedsTap] = useState(false);
-  const [exchange, setExchange] = useState(false);
-  const [connectedName, setConnectedName] = useState("");
 
   const resumePlayback = async () => {
     const videos = [introVideo.current, backgroundVideo.current].filter(Boolean) as HTMLVideoElement[];
@@ -95,12 +90,6 @@ export default function Home() {
     window.setTimeout(() => wave.classList.remove("play"), 650);
   };
 
-  const connect = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    setConnectedName(String(data.get("name") || "YOU").trim().toUpperCase());
-  };
-
   return (
     <main className={`identity ${transitioning ? "is-transitioning" : ""} ${introDone ? "is-ready" : ""}`}>
       <video ref={backgroundVideo} className="video background-video" autoPlay muted playsInline loop preload="auto" disablePictureInPicture aria-hidden="true">
@@ -120,38 +109,14 @@ export default function Home() {
 
       <section className="identity-content">
         <div className="person">
-          <h1><span>Mizuno</span> Yuta.</h1>
-          <p><span>Manager,</span> Business Development</p>
+          <h1>Yuta <span>Mizuno</span></h1>
+          <p className="role">Business Development, Public Relations &amp; President’s Office</p>
+          <p className="company">airweave inc.</p>
         </div>
         <div className="actions">
           <button onPointerDown={fluidPress} onClick={saveContact}><span>SAVE CONTACT</span><svg className="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v15m0 0-5-5m5 5 5-5" /></svg><i className="tap-wave" /></button>
-          <button onPointerDown={fluidPress} onClick={() => setExchange(true)}><span>EXCHANGE CONTACT</span><svg className="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6m0 0H9m9 0v9" /></svg><i className="tap-wave" /></button>
         </div>
       </section>
-
-      <div className={`modal ${exchange ? "open" : ""}`} role="dialog" aria-modal="true" aria-label="Exchange contact">
-        <button className="modal-close" onClick={() => { setExchange(false); setConnectedName(""); }} aria-label="Close">×</button>
-        {!connectedName ? (
-          <div className="form-wrap">
-            <div className="contact-intro"><img src="/mizuno-yuta.jpg" alt="Mizuno Yuta" /><div><p className="eyebrow">LET&apos;S STAY CONNECTED</p><h2>Exchange<br /><em>contact.</em></h2></div></div>
-            <form onSubmit={connect}>
-              <label>Your name<input name="name" required autoComplete="name" placeholder="James" /></label>
-              <label>Company<input name="company" required autoComplete="organization" placeholder="Company name" /></label>
-              <label>Email / LinkedIn<input name="contact" required placeholder="you@company.com" /></label>
-              <fieldset><legend>What are you interested in?</legend><div>{interests.map(item => <label key={item}><input type="radio" name="interest" value={item} defaultChecked={item === "Hospitality"} /><span>{item}</span></label>)}</div></fieldset>
-              <button type="submit">CONNECT <span>→</span></button>
-            </form>
-          </div>
-        ) : (
-          <div className="success">
-            <p>CONNECTED WITH YUTA <b>✓</b></p>
-            <div className="made"><span>YUTA</span><i /><span>{connectedName}</span></div>
-            <h2>CONNECTION<br /><em>MADE.</em></h2>
-            <button onClick={saveContact}>SAVE YUTA TO CONTACTS <span>↓</span></button>
-            <div className="success-links"><a href={profile.linkedin}>LINKEDIN ↗</a><a href={profile.website}>AIRWEAVE ↗</a></div>
-          </div>
-        )}
-      </div>
     </main>
   );
 }

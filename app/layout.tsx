@@ -4,8 +4,8 @@ import "./button-theme.css";
 import "./mobile-video-fix.css";
 
 export const metadata: Metadata = {
-  title: "Yuta Mizuno — airweave Digital Identity",
-  description: "Connect with Yuta Mizuno, Manager of Business Development at airweave.",
+  title: "Yuta Mizuno — airweave Digital Card",
+  description: "Yuta Mizuno, Business Development, Public Relations & President’s Office at airweave inc.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
