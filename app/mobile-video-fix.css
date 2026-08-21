@@ -38,6 +38,28 @@
 .intro-wordmark {
   width: clamp(210px, 33vw, 430px);
   height: auto;
+  animation: introLogo 1.05s .08s ease forwards;
+}
+
+@keyframes introLogo {
+  0% {
+    opacity: 0;
+    filter: brightness(0) saturate(100%) invert(1) blur(14px) drop-shadow(0 2px 16px rgb(0 20 44 / 60%));
+    transform: translate(-50%, -50%) scale(.9);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(0) saturate(100%) invert(1) blur(0) drop-shadow(0 2px 16px rgb(0 20 44 / 60%));
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes logoLeave {
+  to {
+    opacity: 0;
+    filter: brightness(0) saturate(100%) invert(1) blur(5px) drop-shadow(0 2px 16px rgb(0 20 44 / 60%));
+    transform: translate(-50%, -105%) scale(.9);
+  }
 }
 
 .contact-links {
