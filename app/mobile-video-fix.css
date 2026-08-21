@@ -26,7 +26,9 @@
   display: block;
   width: auto;
   object-fit: contain;
-  filter: brightness(0) invert(1) drop-shadow(0 2px 16px rgb(0 20 44 / 60%));
+  opacity: 1;
+  mix-blend-mode: normal;
+  filter: brightness(0) saturate(100%) invert(1) drop-shadow(0 2px 16px rgb(0 20 44 / 60%));
 }
 
 .wordmark {

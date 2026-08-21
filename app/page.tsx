@@ -7,6 +7,7 @@ const profile = {
   title: "Head of Business Development, Public Relations & President’s Office",
   company: "airweave inc.",
   email: "yuta_mizuno@airweave.jp",
+  phone: "090 9967 7937",
   website: "https://airweave.jp/",
 };
 
@@ -70,7 +71,7 @@ export default function Home() {
       const folded = btoa(binary).match(/.{1,74}/g)?.join("\n ") ?? "";
       photoLine = `\nPHOTO;ENCODING=b;TYPE=JPEG:${folded}`;
     } catch { /* Contact still saves if the portrait cannot be loaded. */ }
-    const card = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nN:Mizuno;Yuta;;;\nORG:${profile.company}\nTITLE:${profile.title}\nEMAIL:${profile.email}\nURL:${profile.website}${photoLine}\nEND:VCARD`;
+    const card = `BEGIN:VCARD\nVERSION:3.0\nFN:${profile.name}\nN:Mizuno;Yuta;;;\nORG:${profile.company}\nTITLE:${profile.title}\nTEL;TYPE=CELL:${profile.phone}\nEMAIL:${profile.email}\nURL:${profile.website}${photoLine}\nEND:VCARD`;
     const url = URL.createObjectURL(new Blob([card], { type: "text/vcard" }));
     const link = document.createElement("a");
     link.href = url;
@@ -112,11 +113,6 @@ export default function Home() {
         <div className="person">
           <h1>Yuta <span>Mizuno</span></h1>
           <p className="role">Head of Business Development, Public Relations &amp; President’s Office</p>
-          <p className="company">airweave inc.</p>
-          <div className="contact-links">
-            <a href={`mailto:${profile.email}`}>{profile.email}</a>
-            <a href={profile.website}>airweave.jp</a>
-          </div>
         </div>
         <div className="actions">
           <button onPointerDown={fluidPress} onClick={saveContact}><span>SAVE CONTACT</span><svg className="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v15m0 0-5-5m5 5 5-5" /></svg><i className="tap-wave" /></button>
