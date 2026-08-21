@@ -4,10 +4,10 @@ import { useEffect, useRef, useState } from "react";
 
 const profile = {
   name: "Yuta Mizuno",
-  title: "Business Development, Public Relations & President’s Office",
+  title: "Head of Business Development, Public Relations & President’s Office",
   company: "airweave inc.",
-  email: "yuta.mizuno@airweave.com",
-  website: "https://www.airweave.com/",
+  email: "yuta_mizuno@airweave.jp",
+  website: "https://airweave.jp/",
 };
 
 export default function Home() {
@@ -26,7 +26,8 @@ export default function Home() {
       video.setAttribute("playsinline", "");
       video.setAttribute("webkit-playsinline", "");
     });
-    const results = await Promise.allSettled(videos.map((video) => video.play()));
+    const activeVideo = introVideo.current ?? backgroundVideo.current;
+    const results = activeVideo ? await Promise.allSettled([activeVideo.play()]) : [];
     setNeedsTap(results.every((result) => result.status === "rejected"));
   };
 
@@ -73,7 +74,7 @@ export default function Home() {
     const url = URL.createObjectURL(new Blob([card], { type: "text/vcard" }));
     const link = document.createElement("a");
     link.href = url;
-    link.download = "Mizuno-Yuta.vcf";
+    link.download = "Yuta-Mizuno.vcf";
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -92,26 +93,30 @@ export default function Home() {
 
   return (
     <main className={`identity ${transitioning ? "is-transitioning" : ""} ${introDone ? "is-ready" : ""}`}>
-      <video ref={backgroundVideo} className="video background-video" autoPlay muted playsInline loop preload="auto" disablePictureInPicture aria-hidden="true">
-        <source media="(max-width: 700px) and (orientation: portrait)" src="/airweave-loop-mobile.mp4?v=15" type="video/mp4" />
-        <source src="/airweave-loop.mp4?v=15" type="video/mp4" />
+      <video ref={backgroundVideo} className="video background-video" muted playsInline loop preload="metadata" disablePictureInPicture aria-hidden="true">
+        <source media="(max-width: 700px) and (orientation: portrait)" src="/airweave-loop-mobile.mp4?v=17" type="video/mp4" />
+        <source src="/airweave-loop.mp4?v=17" type="video/mp4" />
       </video>
       {!introDone && <video ref={introVideo} className="video intro-video" autoPlay muted playsInline preload="auto" disablePictureInPicture onCanPlay={() => void resumePlayback()} onTimeUpdate={checkIntro} onEnded={beginTransition} aria-hidden="true">
-        <source media="(max-width: 700px) and (orientation: portrait)" src="/airweave-intro-mobile.mp4?v=15" type="video/mp4" />
-        <source src="/airweave-intro.mp4?v=15" type="video/mp4" />
+        <source media="(max-width: 700px) and (orientation: portrait)" src="/airweave-intro-mobile.mp4?v=17" type="video/mp4" />
+        <source src="/airweave-intro.mp4?v=17" type="video/mp4" />
       </video>}
       <div className="video-shade" />
 
       {needsTap && <button className="play-gate" onClick={() => void resumePlayback()}><i /> TAP TO PLAY</button>}
 
-      <div className="intro-wordmark" aria-hidden="true">airweave</div>
-      <header><div className="wordmark">airweave</div></header>
+      <img className="intro-wordmark" src="/airweave-official-logo.png" alt="" aria-hidden="true" />
+      <header><img className="wordmark" src="/airweave-official-logo.png" alt="airweave" /></header>
 
       <section className="identity-content">
         <div className="person">
           <h1>Yuta <span>Mizuno</span></h1>
-          <p className="role">Business Development, Public Relations &amp; President’s Office</p>
+          <p className="role">Head of Business Development, Public Relations &amp; President’s Office</p>
           <p className="company">airweave inc.</p>
+          <div className="contact-links">
+            <a href={`mailto:${profile.email}`}>{profile.email}</a>
+            <a href={profile.website}>airweave.jp</a>
+          </div>
         </div>
         <div className="actions">
           <button onPointerDown={fluidPress} onClick={saveContact}><span>SAVE CONTACT</span><svg className="action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v15m0 0-5-5m5 5 5-5" /></svg><i className="tap-wave" /></button>
